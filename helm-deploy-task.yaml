@@ -1,0 +1,67 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata: 
+  name: deploy-simple-helm-task # Helm secret required
+spec:
+  inputs: 
+    resources: 
+    - name: git-source
+      type: git
+    - name: image-out
+      type: image
+    params:
+    - name: helm-secret
+      description: The helm secret name
+      default: helm-secret
+    - name: release-name
+      description: The helm release name
+      default: release-name
+    - name: repository-name
+      description: The Github repository name
+      default: repository-name
+    - name: image-tag
+      description: The image tag
+      default: image-tag
+    - name: image-name
+      description: The image name
+      default: image-name
+    - name: target-namespace
+      description: The target namespace
+      default: target-namespace
+  steps:
+  - name: list-everything-debug # This is really useful for figuring out what's in the code we've cloned - for debug
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'find . ;']
+  - name: modify-image-repository
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s/replacemetag/${inputs.params.image-tag}/g {} \;']
+  - name: modify-image-tag
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s!replacemerepo!${inputs.params.image-name}!g {} \;']
+  - name: deploy
+    image: lachlanevenson/k8s-helm
+    command:
+    - helm
+    args: 
+    - 'upgrade'
+    - '--install'
+    - '--wait'
+    - '--tls'
+    - '--tls-ca-cert=/tekton-helm-pipeline/secret/helm/ca.pem'
+    - '--tls-cert=/tekton-helm-pipeline/secret/helm/cert.pem'
+    - '--tls-key=/tekton-helm-pipeline/secret/helm/key.pem'
+    - '--debug'
+    - '--namespace'
+    - '${inputs.params.target-namespace}'
+    - '${inputs.params.release-name}'
+    - './git-source/chart/${inputs.params.repository-name}'
+    volumeMounts:
+    - name: helm-secret
+      mountPath: /tekton-helm-pipeline/secret/helm
+  volumes:
+    - name: helm-secret
+      secret:
+        secretName: "${inputs.params.helm-secret}"

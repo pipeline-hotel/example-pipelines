@@ -1,0 +1,64 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: simple-helm-pipeline
+spec:
+  resources: 
+  - name: git-source
+    type: git
+  - name: docker-image
+    type: image
+  params:
+  - name: registry-secret
+    description: The docker image registry secret name
+    default: registry-secret
+  - name: release-name
+    description: The helm release name
+    default: release-name
+  - name: repository-name
+    description: The repository name
+    default: myreponame
+  - name: image-tag
+    description: The image tag
+    default: image-tag
+  - name: image-name
+    description: The image name
+    default: image-name
+  - name: target-namespace
+    description: The target namespace
+    default: tekton-pipelines
+  tasks:
+  - name: build-simple
+    taskRef:
+      name: build-credential-push
+    resources:
+      inputs:
+      - name: git-source
+        resource: git-source
+      outputs:
+      - name: builtImage
+        resource: docker-image
+    params:
+    - name: registry-secret
+      value: ${params.registry-secret}
+  - name: deploy-simple
+    runAfter: [build-simple]
+    taskRef: 
+      name: deploy-simple-helm-task
+    resources: 
+      inputs:
+      - name: git-source
+        resource: git-source 
+      - name: image-out
+        resource: docker-image
+    params:
+    - name: release-name
+      value: ${params.release-name}
+    - name: repository-name
+      value: ${params.repository-name}
+    - name: image-tag
+      value: ${params.image-tag}
+    - name: image-name
+      value: ${params.image-name}
+    - name: target-namespace
+      value: ${params.target-namespace}
