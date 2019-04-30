@@ -1,3 +1,9 @@
+# This task will deploy a Helm chart using Helm 2.9.1.
+# The image and tag found in a "chart" folder's "values.yaml" file will be replaced in the following way:
+# image: typically registryURL + repo name
+# tag: commit ID
+# A Helm secret is required for this task.
+
 apiVersion: tekton.dev/v1alpha1
 kind: Task
 metadata: 
@@ -36,11 +42,11 @@ spec:
   - name: modify-image-repository
     image: ubuntu
     command: ['/bin/bash']
-    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s/replacemetag/${inputs.params.image-tag}/g {} \;']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s!replacemerepo!${inputs.params.image-name}!g {} \;']
   - name: modify-image-tag
     image: ubuntu
     command: ['/bin/bash']
-    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s!replacemerepo!${inputs.params.image-name}!g {} \;']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s/replacemetag/${inputs.params.image-tag}/g {} \;']
   - name: deploy
     image: lachlanevenson/k8s-helm
     command:

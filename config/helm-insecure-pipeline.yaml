@@ -1,7 +1,10 @@
+# This pipeline will check out then build an image's code, push it to a Docker registry, 
+# then deploy the application assuming a helm chart under the "chart" folder at the repository.
+
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  name: simple-helm-pipeline
+  name: simple-helm-pipeline-insecure
 spec:
   resources: 
   - name: git-source
@@ -44,7 +47,7 @@ spec:
   - name: deploy-simple
     runAfter: [build-simple]
     taskRef: 
-      name: deploy-simple-helm-task
+      name: deploy-simple-helm-task-insecure
     resources: 
       inputs:
       - name: git-source

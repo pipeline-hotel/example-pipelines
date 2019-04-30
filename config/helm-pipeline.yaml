@@ -1,3 +1,7 @@
+# This pipeline will check out then build an image's code, push it to a Docker registry, 
+# then deploy the application assuming a helm chart under the "chart" folder at the repository.
+# A Helm secret must be provided: this is so we can communicate with a secure tiller.
+
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
@@ -12,6 +16,9 @@ spec:
   - name: registry-secret
     description: The docker image registry secret name
     default: registry-secret
+  - name: helm-secret
+    description: The helm secret name
+    default: helm-secret
   - name: release-name
     description: The helm release name
     default: release-name
