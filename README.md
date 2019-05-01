@@ -34,4 +34,4 @@ You will need a Docker secret and patched sevice account in order to push to you
 
 Remember, you only need to do this if you want to kick off a PipelineRun manually.
 
-Look in and modify `ManualPipelineRunAndResources.yaml` to point to your own locations, then `kubectl apply -f ManualPipelineRunAndResources.yaml`.
+Look in and modify `runner.yaml` to point to your own locations, then `kubectl apply -f runner.yaml`.
