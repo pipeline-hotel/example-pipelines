@@ -33,7 +33,7 @@ spec:
     - name: repository-name
       value: "myjavatest"
     - name: release-name
-      value: "simple-node-release"
+      value: "simple-java-release"
     - name: target-namespace
       value: "default"
     - name: image-name
@@ -41,7 +41,7 @@ spec:
     - name: image-tag
       value: "latest"
     - name: replace-repo
-      value: "https://registry.ng.bluemix.net/v2/replace-me-namespace/node"
+      value: "myjavatest"
     - name: replace-tag
       value: "v1.0.0"
 
