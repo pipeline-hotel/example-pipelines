@@ -10,10 +10,10 @@ spec:
     params:
     - name: pathToDockerFile
       description: The path to the dockerfile to build
-      default: /workspace/git-source/Dockerfile
+      default: ./git-source/Dockerfile
     - name: pathToContext
       description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: /workspace/git-source
+      default: ./git-source
   outputs:
     resources:
       - name: builtImage
