@@ -60,9 +60,7 @@ spec:
     resources: 
       inputs:
       - name: git-source
-        resource: git-source 
-      - name: image-out
-        resource: docker-image
+        resource: git-source
     params:
     - name: chart-dir
       value: ${params.chart-dir}
