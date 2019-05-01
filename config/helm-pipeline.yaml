@@ -22,9 +22,6 @@ spec:
   - name: replace-tag
     description: The placeholder tag to be replaced
     default: replacemetag
-  - name: registry-secret
-    description: The docker image registry secret name
-    default: registry-secret
   - name: helm-secret
     description: The helm secret name
     default: helm-secret
@@ -54,9 +51,6 @@ spec:
       outputs:
       - name: builtImage
         resource: docker-image
-    params:
-    - name: registry-secret
-      value: ${params.registry-secret}
   - name: deploy-simple
     runAfter: [build-simple]
     taskRef: 
