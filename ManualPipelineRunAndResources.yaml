@@ -1,0 +1,39 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: git-source
+spec:
+  type: git
+  params:
+  - name: revision
+    value: master
+  - name: url
+    value: https://github.com/a-roberts/simple-node.git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: docker-image
+spec:
+  type: image
+  params:
+  - name: url
+    value: docker.io/<myusername>/<myappname>
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: simple-pipeline-run
+spec:
+  pipelineRef:
+    name: simple-helm-pipeline-insecure # Change if you want to use a different pipeline
+  trigger:
+    type: manual
+  serviceAccount: 'default'
+  resources:
+  - name: git-source
+    resourceRef:
+      name: git-source
+  - name: docker-image
+    resourceRef:
+      name: docker-image

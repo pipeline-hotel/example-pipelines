@@ -26,55 +26,12 @@ If you're not using the webhook-extension, you will need to create a PipelineRun
 If you are using the webhook-extension, follow the instructions at the webhook-extension folder above: this will involve creating a webhook that, when triggered (e.g on a Git push), a 
 pipeline will be run for you (e.g. `simple-helm-pipeline-insecure` if you wish to deploy to an insecure Tiller, such as one you've set up on Docker for Desktop).
 
-# Example PipelineRun
+# Do this if you want to push to Dockerhub
 
-```yaml
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: git-source
-spec:
-  type: git
-  params:
-  - name: revision
-    value: master
-  - name: url
-    value: https://github.com/a-roberts/simple-node.git
----
+You will need a Docker secret and patched sevice account in order to push to your own registry, for example on Dockerhub (tested with tektoncd/pipeline version 0.2) you can use the provided `secret-me-up.sh` script.
 
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineResource
-metadata:
-  name: docker-image
-spec:
-  type: image
-  params:
-  - name: url
-    value: docker.io/<myusername>/<myappname>
----
+# Example PipelineRun and PipelineResources
 
-apiVersion: tekton.dev/v1alpha1
-kind: PipelineRun
-metadata:
-  name: simple-pipeline-run
-spec:
-  pipelineRef:
-    name: simple-helm-pipeline-insecure # Change if you want to use another
-  trigger:
-    type: manual
-  serviceAccount: 'default'
-  resources:
-  - name: git-source
-    resourceRef:
-      name: git-source
-  - name: docker-image
-    resourceRef:
-      name: docker-image
-```
+Remember, you only need to do this if you want to kick off a PipelineRun manually.
 
-Apply the above after making any modifications to point to your own Docker registry and GitHub repository.
-
-
-
-
-
+Look in and modify `ManualPipelineRunAndResources.yaml` to point to your own locations, then `kubectl apply -f ManualPipelineRunAndResources.yaml`.
