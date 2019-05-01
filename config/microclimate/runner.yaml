@@ -31,7 +31,7 @@ spec:
     - name: chart-dir
       value: "chart"
     - name: repository-name
-      value: "node"
+      value: "myjavatest"
     - name: release-name
       value: "simple-node-release"
     - name: target-namespace
