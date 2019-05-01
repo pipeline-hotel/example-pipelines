@@ -11,6 +11,10 @@ The Helm pipelines have been tested with the experimental webhook-extension [web
 If you are using the webhook-extension, follow the instructions at the webhook-extension folder above: this will involve creating a webhook that, when triggered (e.g on a Git push), a 
 pipeline will be run for you (e.g. `simple-helm-pipeline-insecure` if you wish to deploy to an insecure Tiller, such as one you've set up on Docker for Desktop).
 
+## Pushing to a Docker registry
+
+You will need a Docker secret and patched sevice account in order to push to your own registry, for example on Dockerhub (tested with tektoncd/pipeline version 0.2) you can use the provided `create-tekton-docker-secret.sh` script.
+
 __Assumptions:__
 
 - You have a Tiller somewhere and can talk to it (e.g. with `helm list`).
@@ -24,17 +28,14 @@ kubectl apply -f config
 
 This gives you all of the pipeline and task definitions.
 
-If you're not using the webhook-extension, you will need to create a PipelineRun manually. An example is provided below.
+If you are **not** using the webhook extension, you will need to create a PipelineRun and its resources manually. An example is detailed provided below.
 
-# Do this if you want to push to Dockerhub
-
-You will need a Docker secret and patched sevice account in order to push to your own registry, for example on Dockerhub (tested with tektoncd/pipeline version 0.2) you can use the provided `secret-me-up.sh` script.
-
-# Example PipelineRun and PipelineResources
+## Example PipelineRun and PipelineResources
 
 __Remember, you only need to do this if you want to kick off a PipelineRun manually.__
 
 - Modify `runner.yaml` to point to your own locations for GitHub and Dockerhub in the PipelineResources
 - Modify the PipelineRun parameters to point to your own repository name, Helm chart folder name, and push location
 - Run `kubectl apply -f runner.yaml`
-- Observe as build-simple and deploy-simple pods run and complete. If they didn't, make sure you view the pod logs (optionally using the `--all-containers` flag).
+- Watch as the build-simple and deploy-simple pods run and complete. If they didn't, make sure you view the pod logs (optionally using the `--all-containers` flag)
+- If no pods appear, it helps to `get` your created PipelineRun (for example as `json`) to be able to debug the problem
