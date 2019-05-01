@@ -38,10 +38,9 @@ spec:
       value: "<mydockerusername>/my-simple-node-app"
     - name: image-tag
       value: "latest"
-
   trigger:
     type: manual
-  serviceAccount: 'default'
+  serviceAccount: "default"
   resources:
   - name: git-source
     resourceRef:
