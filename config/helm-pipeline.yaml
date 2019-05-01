@@ -13,6 +13,15 @@ spec:
   - name: docker-image
     type: image
   params:
+  - name: chart-dir
+    description: The relative path of the chart directory
+    default: chart
+  - name: replace-repo
+    description: The placeholder image to be replaced
+    default: replacemerepo
+  - name: replace-tag
+    description: The placeholder tag to be replaced
+    default: replacemetag
   - name: registry-secret
     description: The docker image registry secret name
     default: registry-secret
@@ -59,6 +68,12 @@ spec:
       - name: image-out
         resource: docker-image
     params:
+    - name: chart-dir
+      value: ${params.chart-dir}
+    - name: replace-tag
+      value: ${params.replace-tag}
+    - name: replace-repo
+      value: ${params.replace-repo}
     - name: release-name
       value: ${params.release-name}
     - name: repository-name
