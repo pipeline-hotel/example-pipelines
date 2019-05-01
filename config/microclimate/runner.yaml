@@ -8,7 +8,7 @@ spec:
   - name: revision
     value: master
   - name: url
-    value: https://github.ibm.com/AROBERTS/slim-devops-test-project
+    value: https://github.ibm.com/AROBERTS/myjavatest
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
@@ -18,15 +18,15 @@ spec:
   type: image
   params:
   - name: url
-    value: docker.io/adamroberts/my-slim-devops-test-project
+    value: docker.io/adamroberts/my-java-test-project
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
-  name: simple-pipeline-run
+  name: microclimate-pipeline-run # Remember subsequent ones should be uniquely named, I don't auto-delete
 spec:
   pipelineRef:
-    name: simple-helm-pipeline-insecure # Change if you want to use a different pipeline
+    name: microclimate-pipeline # Change if you want to use a different pipeline
   params:
     - name: chart-dir
       value: "chart"
