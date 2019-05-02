@@ -23,10 +23,10 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
-  name: simple-pipeline-run
+  name: microclimate-pipeline-run
 spec:
   pipelineRef:
-    name: simple-helm-pipeline-insecure # Change if you want to use a different pipeline
+    name: microclimate-pipeline # Change if you want to use a different pipeline
   params:
     - name: chart-dir
       value: "chart"

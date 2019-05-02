@@ -1,0 +1,65 @@
+# This task will deploy a Helm chart using Helm 2.9.1.
+# The image and tag found in a "chart" folder's "values.yaml" file will be replaced in the following way:
+# image: typically registryURL + repo name
+# tag: commit ID
+
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata: 
+  name: microclimate-deploy # No Helm secret required
+spec:
+  inputs: 
+    resources: 
+    - name: git-source
+      type: git
+    params:
+    - name: chart-dir
+      description: The Helm chart folder path
+      default: chart
+    - name: replace-repo
+      description: The placeholder image name that will be replaced in values.yaml
+      default: replacemerepo
+    - name: replace-tag
+      description: The placeholder tag that will be replaced in values.yaml
+      default: replacemetag
+    - name: release-name
+      description: The helm release name
+      default: release-name
+    - name: repository-name
+      description: The Github repository org and name e.g. myorg/myrepo
+      default: repository-name
+    - name: image-tag
+      description: The image tag
+      default: image-tag
+    - name: image-name
+      description: The image name
+      default: image-name
+    - name: target-namespace
+      description: The target namespace
+      default: target-namespace
+  steps:
+  - name: list-everything-debug # This is useful for figuring out what's in the code we've cloned
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'find . ;']
+  - name: modify-image-repository
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s!${inputs.params.replace-repo}!${inputs.params.image-name}!g {} \;']
+  - name: modify-image-tag
+    image: ubuntu
+    command: ['/bin/bash']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s/${inputs.params.replace-tag}/${inputs.params.image-tag}/g {} \;']
+  - name: deploy
+    image: lachlanevenson/k8s-helm:v2.9.1
+    command:
+    - helm
+    args: 
+    - 'upgrade'
+    - '--install'
+    - '--wait'
+    - '--debug'
+    - '--namespace'
+    - '${inputs.params.target-namespace}'
+    - '${inputs.params.release-name}'
+    - './git-source/${inputs.params.chart-dir}/${inputs.params.repository-name}'
