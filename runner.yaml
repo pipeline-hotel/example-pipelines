@@ -8,7 +8,7 @@ spec:
   - name: revision
     value: master
   - name: url
-    value: https://github.ibm.com/AROBERTS/slim-devops-test-project
+    value: <mygithubrepository.git>
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
@@ -18,7 +18,7 @@ spec:
   type: image
   params:
   - name: url
-    value: docker.io/adamroberts/my-slim-devops-test-project
+    value: docker.io/<mydockerusername>/<myappname>
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
@@ -37,17 +37,17 @@ spec:
     - name: target-namespace
       value: "default"
     - name: image-name
-      value: "adamroberts/my-simple-node-app"
+      value: "<mydockerusername>/<myappname>"
     - name: image-tag
       value: "latest"
+    # Replace what's in values.yaml for image repository and tag according to below pattern
     - name: replace-repo
-      value: "https://registry.ng.bluemix.net/v2/replace-me-namespace/node"
+      value: "<replace me>"
     - name: replace-tag
-      value: "v1.0.0"
-
+      value: "<replace me>"
   trigger:
     type: manual
-  serviceAccount: 'default'
+  serviceAccount: "default"
   resources:
   - name: git-source
     resourceRef:
