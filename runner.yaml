@@ -31,9 +31,9 @@ spec:
     - name: chart-dir
       value: "chart"
     - name: repository-name
-      value: "node"
+      value: "myreponame"
     - name: release-name
-      value: "simple-node-release"
+      value: "myrelease"
     - name: target-namespace
       value: "default"
     - name: image-name
@@ -42,9 +42,9 @@ spec:
       value: "latest"
     # Replace what's in values.yaml for image repository and tag according to below pattern
     - name: replace-repo
-      value: "<replace me>"
+      value: "<replaceme>"
     - name: replace-tag
-      value: "<replace me>"
+      value: "<replaceme>"
   trigger:
     type: manual
   serviceAccount: "default"
