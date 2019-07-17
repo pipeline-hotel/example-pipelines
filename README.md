@@ -39,3 +39,7 @@ __Remember, you only need to do this if you want to kick off a PipelineRun manua
 - Run `kubectl apply -f runner.yaml`
 - Watch as the build-simple and deploy-simple pods run and complete. If they didn't, make sure you view the pod logs (optionally using the `--all-containers` flag)
 - If no pods appear, it helps to `get` your created PipelineRun (for example as `json`) to be able to debug the problem
+
+## Buildah
+
+The `buildah` pipeline in `config/catalog-buildah-pipeline.yaml` uses the `buildah` task from https://github.com/tektoncd/catalog/blob/master/buildah/buildah.yaml. 
