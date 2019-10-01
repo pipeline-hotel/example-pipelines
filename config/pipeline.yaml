@@ -3,6 +3,10 @@ kind: Pipeline
 metadata:
   name: simple-pipeline
 spec:
+  params:
+  - name: event-headers
+    type: string
+    description: "The event headers"
   resources: 
   - name: git-source
     type: git
@@ -20,6 +24,11 @@ spec:
       - name: builtImage
         resource: docker-image
   - name: deploy-simple
+    conditions:
+    - conditionRef: deployment-condition
+      params:
+      - name: event
+        value: $(params.event-headers)
     runAfter: [build-simple]
     taskRef: 
       name: deploy-simple-kubectl-task
@@ -29,4 +38,3 @@ spec:
         resource: git-source 
       - name: image-out
         resource: docker-image
-
