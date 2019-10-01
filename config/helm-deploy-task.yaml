@@ -49,11 +49,11 @@ spec:
   - name: modify-image-repository
     image: ubuntu
     command: ['/bin/bash']
-    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s!${inputs.params.replace-repo}!${inputs.params.image-name}!g {} \;']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s!$(inputs.params.replace-repo)!$(inputs.params.image-name)!g {} \;']
   - name: modify-image-tag
     image: ubuntu
     command: ['/bin/bash']
-    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s/${inputs.params.replace-tag}/${inputs.params.image-tag}/g {} \;']
+    args: ['-c', 'find ./git-source -name "values.yaml" -type f -exec sed -i -e s/$(inputs.params.replace-tag)/$(inputs.params.image-tag)/g {} \;']
   - name: deploy
     image: lachlanevenson/k8s-helm
     command:
@@ -68,13 +68,13 @@ spec:
     - '--tls-key=/tekton-helm-pipeline/secret/helm/key.pem'
     - '--debug'
     - '--namespace'
-    - '${inputs.params.target-namespace}'
-    - '${inputs.params.release-name}'
-    - './git-source/${inputs.params.chart-dir}/${inputs.params.repository-name}'
+    - '$(inputs.params.target-namespace)'
+    - '$(inputs.params.release-name)'
+    - './git-source/$(inputs.params.chart-dir)/$(inputs.params.repository-name)'
     volumeMounts:
     - name: helm-secret
       mountPath: /tekton-helm-pipeline/secret/helm
   volumes:
     - name: helm-secret
       secret:
-        secretName: "${inputs.params.helm-secret}"
+        secretName: "$(inputs.params.helm-secret)"

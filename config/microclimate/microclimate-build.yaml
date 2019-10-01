@@ -34,10 +34,10 @@ spec:
     args:
     - 'build'
     - '-f'
-    - ${inputs.params.pathToDockerFile}
+    - $(inputs.params.pathToDockerFile)
     - '-t'
     - ${outputs.resources.builtImage.url}
-    - ${inputs.params.pathToContext}
+    - $(inputs.params.pathToContext)
     volumeMounts:
     - name: docker-socket
       mountPath: /var/run/docker.sock

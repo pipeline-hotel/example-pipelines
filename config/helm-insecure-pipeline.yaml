@@ -57,18 +57,18 @@ spec:
         resource: git-source
     params:
     - name: chart-dir
-      value: ${params.chart-dir}
+      value: $(params.chart-dir)
     - name: replace-tag
-      value: ${params.replace-tag}
+      value: $(params.replace-tag)
     - name: replace-repo
-      value: ${params.replace-repo}
+      value: $(params.replace-repo)
     - name: release-name
-      value: ${params.release-name}
+      value: $(params.release-name)
     - name: repository-name
-      value: ${params.repository-name}
+      value: $(params.repository-name)
     - name: image-tag
-      value: ${params.image-tag}
+      value: $(params.image-tag)
     - name: image-name
-      value: ${params.image-name}
+      value: $(params.image-name)
     - name: target-namespace
-      value: ${params.target-namespace}
+      value: $(params.target-namespace)

@@ -16,7 +16,7 @@ spec:
     args: ['-c', 'find ./git-source/config -type f -exec sed -i -e s!"image: PIPELINE_REPLACE:latest"!"image: ${IMG}"!g {} \;']
     env:
       - name: IMG
-        value: ${inputs.resources.image-out.url}
+        value: $(inputs.resources.image-out.url)
   - name: install-new
     image: lachlanevenson/k8s-kubectl
     command: ['kubectl']
