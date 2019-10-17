@@ -11,8 +11,8 @@ spec:
     name: deployment-condition
     image: stedolan/jq
     command:
-    - sh
+    - bash
     args:
     - -ce
     - |
-      [ $(jq .X-GitHub-Event <<< "$(params.event-headers)") -ne "pull_request" ]
+      [[ $(jq '."Ce-Github-Event"[0]' <<< '$(params.event-headers)') = *"push"* ]]
