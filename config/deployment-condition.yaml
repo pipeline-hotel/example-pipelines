@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Condition
 metadata:
-  name: deployment-condition
+  name: only-github-push-event
 spec:
   params:
   - name: event-headers

@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1alpha1
 kind: Pipeline
 metadata:
-  name: simple-pipeline-insecure
+  name: simple-manual-pipeline
 spec:
   resources: 
   - name: git-source
@@ -11,7 +11,7 @@ spec:
   tasks:
   - name: build-simple
     taskRef:
-      name: build-push-insecure
+      name: build-push
     resources:
       inputs:
       - name: git-source
@@ -22,7 +22,7 @@ spec:
   - name: deploy-simple
     runAfter: [build-simple]
     taskRef: 
-      name: deploy-simple-kubectl-task-insecure
+      name: deploy-simple-kubectl-task
     resources: 
       inputs:
       - name: git-source
