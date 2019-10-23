@@ -17,11 +17,14 @@ spec:
     description: The service account to use
   - name: event-type
     description: The git event that triggered the webhook
+  - name: target-namespace
+    description: The namespace in which to create the resource
   resourcetemplates:
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
     metadata:
       name: git-source-$(uid)
+      namespace: $(params.target-namespace)
     spec:
       type: git
       params:
@@ -33,6 +36,7 @@ spec:
     kind: PipelineResource
     metadata:
       name: docker-image-$(uid)
+      namespace: $(params.target-namespace)
     spec:
       type: image
       params:
@@ -42,6 +46,7 @@ spec:
     kind: PipelineRun
     metadata:
       generateName: simple-pipeline-run-
+      namespace: $(params.target-namespace)
     spec:
       serviceAccount: $(params.service-account)
       pipelineRef:
