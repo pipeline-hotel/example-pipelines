@@ -12,3 +12,5 @@ spec:
     value: $(body.repository.name):$(body.head_commit.id)
   - name: event-type
     value: $(header.X-Github-Event)
+  - name: webhooks-tekton-git-branch
+    value: $(body.webhooks-tekton-git-branch)

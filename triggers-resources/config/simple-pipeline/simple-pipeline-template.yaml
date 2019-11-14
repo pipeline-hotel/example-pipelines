@@ -6,25 +6,12 @@ kind: TriggerTemplate
 metadata:
   name: simple-pipeline-template
 spec:
-  params:
-  - name: gitrevision
-    description: The git revision
-    default: master
-  - name: gitrepositoryurl
-    description: The git repository url
-  - name: service-account
-    default: tekton-webhooks-extension
-    description: The service account to use
-  - name: event-type
-    description: The git event that triggered the webhook
-  - name: target-namespace
-    description: The namespace in which to create the resource
   resourcetemplates:
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
     metadata:
       name: git-source-$(uid)
-      namespace: $(params.target-namespace)
+      namespace: $(params.webhooks-tekton-target-namespace)
     spec:
       type: git
       params:
@@ -36,19 +23,24 @@ spec:
     kind: PipelineResource
     metadata:
       name: docker-image-$(uid)
-      namespace: $(params.target-namespace)
+      namespace: $(params.webhooks-tekton-target-namespace)
     spec:
       type: image
       params:
       - name: url
-        value: $(params.docker-registry)/$(params.docker-tag)
+        value: $(params.webhooks-tekton-docker-registry)/$(params.docker-tag)
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineRun
     metadata:
       generateName: simple-pipeline-run-
-      namespace: $(params.target-namespace)
+      namespace: $(params.webhooks-tekton-target-namespace)
+      labels:
+        webhooks.tekton.dev/gitServer: $(params.webhooks-tekton-git-server)
+        webhooks.tekton.dev/gitOrg: $(params.webhooks-tekton-git-org)
+        webhooks.tekton.dev/gitRepo: $(params.webhooks-tekton-git-repo)
+        webhooks.tekton.dev/gitBranch: $(params.webhooks-tekton-git-branch)
     spec:
-      serviceAccount: $(params.service-account)
+      serviceAccount: $(params.webhooks-tekton-service-account)
       pipelineRef:
         name: simple-pipeline
       params:
