@@ -40,7 +40,7 @@ spec:
         webhooks.tekton.dev/gitRepo: $(params.webhooks-tekton-git-repo)
         webhooks.tekton.dev/gitBranch: $(params.webhooks-tekton-git-branch)
     spec:
-      serviceAccount: $(params.webhooks-tekton-service-account)
+      serviceAccountName: $(params.webhooks-tekton-service-account)
       pipelineRef:
         name: simple-pipeline
       params:
