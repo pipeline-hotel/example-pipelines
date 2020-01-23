@@ -1,6 +1,10 @@
 # example-pipelines
 
-Example Tekton pipelines and trigger resources
+Example Tekton Trigger pipelines/resources
+
+## Compatibility
+
+The master branch of this repo, should work with the master branch of webhooks-extension.  If not running on master, then you should find branches available in this repository named at the levels of dashboard/webhooks-extension they support.
 
 ## Pipelines
 - `simple-pipeline`

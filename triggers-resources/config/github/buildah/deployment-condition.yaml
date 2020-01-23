@@ -6,7 +6,7 @@ spec:
   params:
   - name: "event-type"
     type: string
-    description: "The GitHub event type"
+    description: "The Git event type"
   check:
     name: deployment-condition
     image: alpine

@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: buildah-gitlab-pipeline-pullrequest-binding
+spec:
+  params:
+  - name: gitrevision
+    value: $(body.object_attributes.last_commit.id)
+  - name: gitrepositoryurl
+    value: $(body.project.git_http_url)
+  - name: docker-tag
+    value: $(body.project.name):$(body.webhooks-tekton-image-tag)
+  - name: event-type
+    value: $(header.X-Gitlab-Event)
+  - name: webhooks-tekton-git-branch
+    value: $(body.webhooks-tekton-git-branch)

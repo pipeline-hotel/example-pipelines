@@ -3,7 +3,7 @@ kind: TriggerTemplate
 # This requires the simple pipeline tasks from the pipeline hotel to be installed first
 # and the simple pipeline, and the conditional resource
 metadata:
-  name: buildah-pipeline-template
+  name: buildah-gitlab-pipeline-template
 spec:
   params:
   - name: gitrevision
@@ -28,6 +28,8 @@ spec:
     description: The ServiceAccount that the PipelineRun will execute under
   - name: webhooks-tekton-target-namespace
     description: The namespace in which to create this TriggerTemplate's resources
+  - name: webhooks-tekton-ssl-verify
+    description: Whether or not to verify the git server's SSL certificate
   resourcetemplates:
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
@@ -41,6 +43,8 @@ spec:
         value: $(params.gitrevision)
       - name: url
         value: $(params.gitrepositoryurl)
+      - name: sslVerify
+        value: $(params.webhooks-tekton-ssl-verify)
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineResource
     metadata:
