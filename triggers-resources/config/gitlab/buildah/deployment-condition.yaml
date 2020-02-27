@@ -10,5 +10,8 @@ spec:
   check:
     name: deployment-condition
     image: alpine
-    command: ["/bin/sh"]
-    args: ['-ce', "[[ $(params.event-type) != pull_request ]]" ]
+    command:
+      - "/bin/sh"
+    args:
+      - '-ce'
+      - "[[ \"$(params.event-type)\" != \"Merge Request Hook\" ]]"

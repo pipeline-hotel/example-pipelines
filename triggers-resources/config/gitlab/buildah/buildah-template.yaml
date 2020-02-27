@@ -58,7 +58,7 @@ spec:
   - apiVersion: tekton.dev/v1alpha1
     kind: PipelineRun
     metadata:
-      generateName: buildah-pipeline-run-
+      generateName: buildah-gitlab-pipeline-run-
       namespace: $(params.webhooks-tekton-target-namespace)
       labels:
         webhooks.tekton.dev/gitServer: $(params.webhooks-tekton-git-server)
@@ -68,7 +68,7 @@ spec:
     spec:
       serviceAccountName: $(params.webhooks-tekton-service-account)
       pipelineRef:
-        name: buildah-pipeline
+        name: buildah-gitlab-pipeline
       params:
       - name: event-type
         value: $(params.event-type)
