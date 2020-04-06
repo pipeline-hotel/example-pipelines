@@ -1,6 +1,6 @@
 # example-pipelines
 
-Example Tekton Trigger pipelines/resources
+Example Tekton Trigger pipelines/resources - tested with Tekton Triggers 0.4 and Tekton Pipelines 0.11.0.  
 
 ## Compatibility
 

@@ -1,7 +1,8 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: triggers.tekton.dev/v1alpha1
 kind: TriggerTemplate
 # This requires the simple pipeline tasks from the pipeline hotel to be installed first
 # and the simple pipeline, and the conditional resource
+# Tested on Tekton 0.11
 metadata:
   name: buildah-pipeline-template
 spec:
@@ -55,7 +56,7 @@ spec:
       params:
       - name: url
         value: $(params.webhooks-tekton-docker-registry)/$(params.docker-tag)
-  - apiVersion: tekton.dev/v1alpha1
+  - apiVersion: tekton.dev/v1beta1
     kind: PipelineRun
     metadata:
       generateName: buildah-pipeline-run-
@@ -79,5 +80,3 @@ spec:
       - name: docker-image
         resourceRef:
           name: docker-image-$(uid)
-
-
