@@ -1,23 +1,22 @@
-apiVersion: tekton.dev/v1alpha1
+apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: build-push
 spec:
-  inputs:
-    resources:
+  resources:
+    inputs:
       - name: git-source
         type: git
-    params:
-    - name: pathToDockerFile
-      description: The path to the dockerfile to build
-      default: ./git-source/Dockerfile
-    - name: pathToContext
-      description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
-      default: ./git-source
-  outputs:
-    resources:
+    outputs:
       - name: builtImage
         type: image
+  params:
+  - name: pathToDockerFile
+    description: The path to the dockerfile to build
+    default: ./git-source/Dockerfile
+  - name: pathToContext
+    description: The build context used by Kaniko (https://github.com/GoogleContainerTools/kaniko#kaniko-build-contexts)
+    default: ./git-source
   steps:
   - name: build
     image: docker
@@ -48,4 +47,4 @@ spec:
       hostPath:
         path: /var/run/docker.sock
         type: Socket
-
+        
